@@ -1,3 +1,5 @@
+import {log} from "util";
+
 console.log('lesson 2');
 
 // Lexical environment
@@ -34,7 +36,8 @@ console.log('lesson 2');
 // counter(); // 3
 
 // Task 03
-// Переписать функцию из Task 02 так, что бы она принимала число в качестве аргумента и это число было стартовым значением счетчика
+// Переписать функцию из Task 02 так, что бы она принимала число
+// в качестве аргумента и это число было стартовым значением счетчика
 // и возвращала следующий объект методов:
 // increase: +1
 // decrease: -1
@@ -60,4 +63,26 @@ console.log('lesson 2');
 // написать функцию, которая повторяет функционал метода flat массива на всю глубину.
 
 // just a plug
-export default () => {};
+
+// Занятие димыча по промисам
+let axios = {
+    get() {
+        let pr = new Promise((resolve:any, reject):any => {
+            setTimeout(() => {
+                resolve({
+                    massage: 'resolve',
+                    id: 1
+                })
+            }, 3000)
+        })
+        return pr
+    }
+}
+
+axios.get()
+    // @ts-ignore
+    .then(data => data.massage)
+    .then(data => console.log(data))
+
+export default () => {
+};

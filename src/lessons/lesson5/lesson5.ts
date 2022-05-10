@@ -1,3 +1,5 @@
+import {log} from "util";
+
 console.log('Lesson 5');
 
 // Keyword - this
@@ -30,10 +32,22 @@ type someObjType = {
     age: number;
 }
 
-let someObj:someObjType = {
+let someObj: someObjType = {
     name: 'Eugene',
-    age: 32
+    age: 32,
+
 }
+
+function greeting(){
+    // @ts-ignore
+    return `My name is ${this.name}. I am ${this.age}`
+}
+// @ts-ignore
+someObj.greeting = greeting
+
+// @ts-ignore
+// console.log(someObj.greeting())
+
 
 // Task 02
 // реализовать счетчик counter в виде объекта со следующими методами:
@@ -44,18 +58,112 @@ let someObj:someObjType = {
 // rest current count - устанавливает значение счетчика равным 0
 // все методы должны ссылаться на сам объект
 
+type CounterType = {
+    init: number,
+    getCurrentCount: () => void,
+    increment: () => void,
+    decrement: () => void,
+    setCurrentCount: (num: number) => void,
+    restCurrentCount: () => void,
+}
+
+let counter: CounterType = {
+    init: 5,
+    getCurrentCount() {
+        return console.log(this.init)
+    },
+    increment() {
+        this.init++
+    },
+    decrement() {
+        this.init--
+    },
+    setCurrentCount(num: number) {
+        this.init = num
+    },
+    restCurrentCount() {
+        this.init = 0
+    },
+}
+// console.log(counter.restCurrentCount())
+// console.log(counter.getCurrentCount())
+
 // Task 03
 // переделайте код из Task 02, что бы сработал следующий код:
 // counter.setCurrentCount(10).increment().increment().increment().decrement().getCurrentCount() // 12
+
+let counter1: any = {
+    init: 5,
+    getCurrentCount() {
+        return console.log(this.init)
+    },
+    increment() {
+        this.init++
+        return this
+    },
+    decrement() {
+        this.init--
+        return this
+    },
+    setCurrentCount(num: number) {
+        this.init = num
+        // function f() {counter1.this}
+        return this
+
+    },
+    restCurrentCount() {
+        this.init = 0
+        return this
+    },
+}
+//console.log(counter1.setCurrentCount(10).increment().getCurrentCount())
+// counter1.setCurrentCount(10).increment()
+
+// console.log(counter1.setCurrentCount(10).increment().increment().increment().decrement().getCurrentCount())
+// 12)
 
 // Task 04
 // Написать функцию конструктор myFirstConstructorFunc которая принимает 2 параметра name и age и возвращает объект
 // у которого будут эти свойства и метод greeting из Task 01
 
+// function MyFirstConstructorFunc (name: any, age: any) {
+//   //
+//    return someObj.greeting.call({name, age})
+// }
+
+function MyFirstConstructorFunc(name: any, age: any) {
+    // @ts-ignore
+    this.name = name
+    // @ts-ignore
+    this.age = age
+}
+// @ts-ignore
+
+MyFirstConstructorFunc.prototype.greeting = someObj.greeting
+// @ts-ignore
+
+let a = new MyFirstConstructorFunc('kkk', 12)
+// console.log(new MyFirstConstructorFunc('kkk', 12))
+
+// console.log(a.greeting())
+
 // Task 05 есть 2 объекта One и Two. С помощью bind и метода sayHello заставьте поздороваться объект One
 
-let One = {name: 'One'};
-let Two = {name: 'Two', sayHello: function() {console.log(`Hello, my name is ${this.name}`)}};
+let One = {
+    name: 'One',
+    // hi() {
+    //     helperObj.greeting.bind(Two)()
+    // }
+};
+let Two = {
+    name: 'Two',
+    age: 0,
+    sayHello: function () {
+        console.log(`Hello, my name is ${this.name}`)
+    }
+};
+//
+// Two.sayHello.bind(One)()
 
 // Task 06
 // создайте объект helperObj у которого есть следующие методы:
@@ -64,19 +172,86 @@ let Two = {name: 'Two', sayHello: function() {console.log(`Hello, my name is ${t
 // greeting - используется функция sayHello из Task 05
 // можно использовать @ts-ignore
 
+const helperObj: any = {
+    name: '',
+    age: 0,
+    changeName(name: string) {
+        this.name = name
+        return this
+    },
+    setAge(age: number) {
+        this.age = age
+        return this
+    },
+    greeting:
+        Two.sayHello
+}
+// console.log(helperObj.changeName('Vasya').greeting())
+// @ts-ignore
+// helperObj.changeName('Vasya1').greeting()
+
+
 // Bind
 // 1) Дана функция sumTwoNumbers, реализовать функцию bindNumber которая принимает функцию sumTwoNumbers и число, и
 // возвращает другую функцию, которое также принимает число и возвращает сумму этих чисел. Замыкание использовать нельзя
-function sumTwoNumbers(a:number,b:number):number {return a + b};
+
+// ???????????????????
+// function sumTwoNumbers(a: number, b: number): number {
+//     return a + b
+// };
+//
+// function bindNumber(n:any, num:any){
+// let num2 = num
+//     // @ts-ignore
+//     const _this = this;
+//     return function ff(num2:any) {
+//     // @ts-ignore
+//       return n.bind(_this.n, num2, num2)()
+//     }
+//     // @ts-ignore
+//     ff(num)
+// }
+
+function sumTwoNumbers(a, b) { return a + b };
+
+// @ts-ignore
+const bindNumber = (callBack, num) => {
+    return callBack.bind(null, num)
+}
+
+console.log(bindNumber(sumTwoNumbers, 10)(5))
+
+
+// console.log(bindNumber(sumTwoNumbers(1,2), 3))
 
 // 2) Напишите функцию которая принимает первым аргументом объект One, а вторым helperObj. Данная функция
 // возвращает другую функцию которая принимает строку в качестве аргумента и устанавливает ее свойству name объекта One
-// 3) Одной строкой установить с помощью helperObj объекту Two поле age в значение 30
-// 4) Создать метод hi у объекта One, который всегда вызывает метод greeting объекта helperObj от имени Two
 
+// ???????????????????
+function someFunc(One:any, helperObj:any) {
+    return function (str:string){
+        helperObj.changeName.bind(One, str)()
+    }
+}
+
+someFunc(One, helperObj)('Roman')
+console.log(One)
+
+// 3) Одной строкой установить с помощью helperObj объекту Two поле age в значение 30
+
+helperObj.setAge.bind(Two, 30)()
+// console.log(Two)
+// console.log('two', Two.age)
+
+// 4) Создать метод hi у объекта One, который всегда вызывает метод greeting объекта helperObj от имени Two
+// @ts-ignore
+One.hi = helperObj.greeting.bind(Two)
+// @ts-ignore
+
+One.hi()
 // Реализовать задачи 2-4 из Bind с помощью Call
 
 
-
 // just a plug
-export default () => {};
+export default () => {
+};

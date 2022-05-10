@@ -1,0 +1,90 @@
+<meta charset="utf-8">
+<script src="axios1.js"></script>
+<script src="api.js"></script>
+<script>
+    // // внутрь Promise передаем колбэк-функцию, которая собственно и есть та логика, которую промис обещает выполнить.
+    // let myPromise = new Promise((resolve, reject) => {
+    //     setTimeout(() => {
+    //         resolve(Math.random())
+    //     }, 2000 )
+    //
+    // });
+    //
+    //
+    // // ниже по коду мы можем подписаться, на промис, чтобы он (промис) вызвал нашу функцию, когда он (промис)
+    // // зарезолвится. Для этого передаём в метод then колбэк-функцию)
+    // myPromise.then(( data) => {
+    //     console.log(data)
+    //     console.log("1 myPromise зарезолвился, и я узнал об этом" + data);
+    // })
+    //
+    // myPromise.then(( data) => {
+    //     console.log(data)
+    //     console.log("2 myPromise зарезолвился, и я узнал об этом" + data);
+    // })
+
+    // let doAfter = (sec) => {
+    //     let prom = new Promise ((resolve, reject) => {
+    //         setTimeout(()=>{
+    //         resolve(sec)
+    //     }, sec*1000)})
+    //     return prom
+    // }
+    //
+    // doAfter(10).then( () => console.log('я сработал через 10 секунд') );
+    // doAfter(5).then( () => console.log('я сработал через 5 секунд') );
+    // setTimeout(()=>{
+    // doAfter(5).then( () => console.log('а я сработал через 3 секунд') );
+    // }, 5000)
+
+
+    // let prpr = new Promise( (resolve) => {
+    //     let i = 0;
+    //     setInterval(()=> {
+    //         i++;
+    //         resolve(i)
+    //     }, 3000)
+    // })
+    //
+    // prpr.then( (i) => console.log(i))
+
+    // let callback1 = () => {
+    //     console.log('Мой промис зарезолвился')
+    //     return 'Васей'
+    // } ;
+    // let callback2 = (data) => console.log('Мой промис тоже зарезолвился следом за ' + data);
+    //
+    // let pr1 = doAfter(3);
+    // let pr2 = pr1.then(callback1);
+    // pr2.then(callback2);
+    //
+    // doAfter(5)
+    //     .then(() => {console.log('Мой промис зарезолвился')
+    //         return 'Олей'})
+    //     .then((data) => console.log('Мой промис тоже зарезолвился следом за ' + data))
+
+    // let pr = new Promise( (resolve) => {
+    //     let data = {
+    //         cities: [{title: "Minsk"}, {title: "Kiev"}],
+    //         website: "it-kamasutra.com"
+    //     };
+    //     resolve(data);
+    // });
+    //
+    // let a = pr
+    // let b = a.then( data => {
+    //     console.log(data.website);
+    // })
+    // let c= b.then( website => {
+    //         console.log(website);
+    //     })
+
+        api.sendStudentsCountToItKamasutra(20)
+        .then(res => {
+        console.log(res);
+    });
+
+
+
+
+</script>

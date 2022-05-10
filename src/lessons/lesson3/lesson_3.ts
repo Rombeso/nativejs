@@ -1,3 +1,5 @@
+import axios from "axios";
+
 console.log('lesson 3');
 
 // Event loop
@@ -17,4 +19,48 @@ console.log('lesson 3');
 
 
 // just a plug
+
+const configOMB = {
+    baseURL: 'https://jsonplaceholder.typicode.com',
+};
+const axiosInstance = axios.create(configOMB);
+
+
+
+// axiosInstance(
+//     {
+//     url: `/posts`,
+//     method: "post",
+//     data: {
+//         title: 'First message ROMAN',
+//         body: "I like spaget!",
+//         userId: 1001
+//     }
+//     })
+//
+//     .then(res => {
+//     console.log(res.data)
+// })
+// axiosInstance(
+//     {
+//     url: `/posts/2`,
+//     method: "put",
+//     data: {
+//         title: 'First message ROMAN',
+//         body: "I like spaget!",
+//         userId: 1001
+//     }
+//     })
+//
+//     .then(res => {
+//     console.log(res.data)
+// })
+
+// axiosInstance.delete(`/posts/1`).then(res => {
+//     console.log(res.data)
+// })
+//
+// axiosInstance.get(`/posts`).then(res => {
+//     console.log(res.data)
+// })
 export default ()=>{};
